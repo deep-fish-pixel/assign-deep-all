@@ -58,27 +58,8 @@ export function getAssign(options = {}) {
     sources.forEach(function (source) {
       extend(options, target, source);
     });
+    return target;
   }
 }
 
 
-var target = {
-  a: {
-    b: {
-      c: 1
-    }
-  },
-  list: [1, 2]
-};
-var source = {
-  a: {
-    b: {
-      c: 2,
-      d: 3
-    }
-  },
-  list: [3, 4, 5]
-};
-assign(target, source);
-source.a.b.c = 22;
-console.log(JSON.stringify(target));//{"a":{"b":{"c":2,"d":3}},"list":[3,4,5]}

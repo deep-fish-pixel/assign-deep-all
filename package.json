@@ -1,6 +1,6 @@
 {
   "name": "assign-deep-all",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "assign or extends object、array、set、map by deep or shallow",
   "main": "build/index.js",
   "scripts": {
