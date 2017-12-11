@@ -50,5 +50,9 @@
       "afterEach",
       "expect"
     ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/maweimaweima/assign-deep-all.git"
   }
 }
