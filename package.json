@@ -1,8 +1,8 @@
 {
   "name": "assign-deep-all",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "assign or extends object、array、set、map by deep or shallow",
-  "main": "lib/index.js",
+  "main": "build/index.js",
   "scripts": {
     "start": "node build/test/test.js",
     "debug": "node --inspect-brk build/test/test01.js",
