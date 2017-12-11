@@ -1,31 +1,46 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+exports.isFunction = isFunction;
+exports.isArray = isArray;
+exports.isObject = isObject;
+exports.isNumber = isNumber;
+exports.isString = isString;
+exports.isBoolean = isBoolean;
+exports.isNullUndefined = isNullUndefined;
 /*
  * author: mawei
  * get the target type
  * */
-export function isFunction(method) {
+function isFunction(method) {
   return typeof method === 'function';
 }
 
-export function isArray(array) {
+function isArray(array) {
   return Object.prototype.toString.call(array) === '[object Array]';
 }
 
-export function isObject(obj) {
-  return typeof obj === 'object' && obj != null;
+function isObject(obj) {
+  return (typeof obj === 'undefined' ? 'undefined' : _typeof(obj)) === 'object' && obj != null;
 }
 
-export function isNumber(obj) {
+function isNumber(obj) {
   return typeof obj === 'number';
 }
 
-export function isString(obj) {
+function isString(obj) {
   return typeof obj === 'string';
 }
 
-export function isBoolean(obj) {
+function isBoolean(obj) {
   return typeof obj === 'boolean';
 }
 
-export function isNullUndefined(obj) {
+function isNullUndefined(obj) {
   return obj === null || obj === undefined;
 }

@@ -1,14 +1,14 @@
 {
   "name": "assign-deep-all",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "assign or extends object、array、set、map by deep or shallow",
   "main": "build/index.js",
   "scripts": {
     "start": "node build/test/test.js",
     "debug": "node --inspect-brk build/test/test01.js",
     "clean": "rimraf build",
-    "build": "npm run clean && babel -w src/ -d build/",
-    "build-dev": "babel -w src/ -d build/ --source-maps",
+    "build": "npm run clean && babel src --out-dir build",
+    "build-dev": "babel src --out-dir build --source-maps",
     "test": "npm run test:unit",
     "test:unit": "cross-env NODE_ENV=test mocha ./test/**/*.test.js --compilers js:babel-register",
     "test-debug": "cross-env NODE_ENV=test mocha ./test/**/*.test.js --inspect-brk --compilers js:babel-register"

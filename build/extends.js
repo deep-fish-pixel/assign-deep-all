@@ -1,39 +1,60 @@
-/*
-* extend object or array in deep or shallow
-* */
-import invariant from 'invariant';
-import cloneDeep from 'clone-deep';
-import isUnscalable from './isUnscalable';
-import { isArray, isBoolean, isNumber, isObject, isString, isNullUndefined } from './types';
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; /*
+                                                                                                                                                                                                                                                                              * extend object or array in deep or shallow
+                                                                                                                                                                                                                                                                              * */
+
+
+exports.default = extend;
+
+var _invariant = require('invariant');
+
+var _invariant2 = _interopRequireDefault(_invariant);
+
+var _cloneDeep = require('clone-deep');
+
+var _cloneDeep2 = _interopRequireDefault(_cloneDeep);
+
+var _isUnscalable = require('./isUnscalable');
+
+var _isUnscalable2 = _interopRequireDefault(_isUnscalable);
+
+var _types = require('./types');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 /*
 * handle extends
 * */
 function handle(options, target, nextSource) {
-  if (isUnscalable(nextSource)) {
+  if ((0, _isUnscalable2.default)(nextSource)) {
     return target;
   }
-  const deep = options.deep;
+  var deep = options.deep;
 
-  if (isArray(target) && isArray(nextSource)) {
+  if ((0, _types.isArray)(target) && (0, _types.isArray)(nextSource)) {
     if (!options.concat) {
       nextSource.forEach(function (element, index) {
-        target[index] = deep ? cloneDeep(element) : element;
+        target[index] = deep ? (0, _cloneDeep2.default)(element) : element;
       });
     } else {
       nextSource.forEach(function (element) {
-        target.push(deep ? cloneDeep(element) : element);
+        target.push(deep ? (0, _cloneDeep2.default)(element) : element);
       });
     }
-  } else if (isObject(target) || isArray(nextSource)) {
+  } else if ((0, _types.isObject)(target) || (0, _types.isArray)(nextSource)) {
     var value;
     for (var nextKey in nextSource) {
       if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
         value = nextSource[nextKey];
-        if (!deep || isUnscalable(value)) {
+        if (!deep || (0, _isUnscalable2.default)(value)) {
           target[nextKey] = value;
-        } else if (isNullUndefined(target[nextKey])) {
-          if (isArray(value)) {
+        } else if ((0, _types.isNullUndefined)(target[nextKey])) {
+          if ((0, _types.isArray)(value)) {
             target[nextKey] = [];
           } else {
             target[nextKey] = {};
@@ -50,10 +71,10 @@ function handle(options, target, nextSource) {
 /*
  * extend object or array in deep or shallow
  * */
-export default function extend(options, target, nextSource) {
+function extend(options, target, nextSource) {
   if (process.env.NODE_ENV !== 'production') {
-    invariant(target !== null || target !== undefined, `target value can't be ${String(target).toString()}`);
-    invariant(!isNumber(target) || !isString(target) || !isBoolean(target), `target value type can't be ${typeof target}`);
+    (0, _invariant2.default)(target !== null || target !== undefined, 'target value can\'t be ' + String(target).toString());
+    (0, _invariant2.default)(!(0, _types.isNumber)(target) || !(0, _types.isString)(target) || !(0, _types.isBoolean)(target), 'target value type can\'t be ' + (typeof target === 'undefined' ? 'undefined' : _typeof(target)));
   }
   handle(options, target, nextSource);
 }
