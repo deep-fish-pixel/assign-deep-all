@@ -187,6 +187,9 @@ This target.length is 4;
 
 ##### Get assign by options
 
+If the aboves can't meet the needs, you can use getAssign to achieve your custom need.
+And if you use depth to limit nest steps,  only use getAssign to achieve that;
+
 ```
 import {getAssign} from 'assign-deep-all';
 
@@ -195,6 +198,7 @@ var source = [3, 4, 5];
 getAssign({
     deep: true, //default true
     arrayConcat: true, //default false
+    depth: 3, //default Infinity
   })(target, source);
 console.log(JSON.stringify(target));//[1,2,3,4,5]
 ```
@@ -209,10 +213,11 @@ Get different assign method by options.
 options = {
     deep: true, //deep or shallow assign. default true
     arrayConcat: false, //assign array merge or concat. default false
-    depth: 3, //assign deep depth nest. default infinite.
+    depth: 3, //assign deep depth nest. default Infinite.
 }
 ```
 Note: if deep value is false, depth value is unvalide;
+Only use getAssign to achieve limited nest steps by depth setting;
 
 ##### assign(target, ...sources) 
 

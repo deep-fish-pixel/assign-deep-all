@@ -89,7 +89,7 @@ function handle(options, target, nextSource) {
           }
           next && handle({
             arrayConcat: options.arrayConcat,
-            depth: (0, _types.isNullUndefined)(options.depth) ? undefined : options.depth - 1,
+            depth: options.depth - 1,
             deep: options.deep && options.depth !== 1
           }, target[nextKey], value, target, nextKey);
         }
@@ -106,6 +106,7 @@ function extend(options, target, nextSource) {
   if (process.env.NODE_ENV !== 'production') {
     (0, _invariant2.default)(target !== null || target !== undefined, 'target value can\'t be ' + String(target).toString());
     (0, _invariant2.default)(!(0, _types.isNumber)(target) || !(0, _types.isString)(target) || !(0, _types.isBoolean)(target), 'target value type can\'t be ' + (typeof target === 'undefined' ? 'undefined' : _typeof(target)));
+    (0, _invariant2.default)(!!options.depth, 'assign depth can\'t be 0!');
   }
   return handle(options, target, nextSource);
 }

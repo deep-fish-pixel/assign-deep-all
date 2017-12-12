@@ -93,7 +93,7 @@ function handle (options, target, nextSource) {
           }
           next && handle({
             arrayConcat: options.arrayConcat,
-            depth: isNullUndefined(options.depth) ? undefined : options.depth - 1,
+            depth: options.depth - 1,
             deep: options.deep && options.depth !== 1
           }, target[nextKey], value, target, nextKey);
         }
@@ -113,6 +113,7 @@ export default function extend(options, target, nextSource) {
     invariant(!isNumber(target)
       || !isString(target)
       || !isBoolean(target), `target value type can't be ${typeof target}`);
+    invariant(!!options.depth, `assign depth can't be 0!`);
   }
   return handle(options, target, nextSource);
 }

@@ -22,7 +22,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function assign() {
   return getAssign({
     deep: true,
-    arrayConcat: false
+    arrayConcat: false,
+    depth: Infinity
   }).apply(undefined, arguments);
 }
 
@@ -35,7 +36,8 @@ function assign() {
 function assignDeep() {
   return getAssign({
     deep: true,
-    arrayConcat: false
+    arrayConcat: false,
+    depth: Infinity
   }).apply(undefined, arguments);
 };
 
@@ -45,7 +47,8 @@ function assignDeep() {
 function assignConcat() {
   return getAssign({
     deep: true,
-    arrayConcat: true
+    arrayConcat: true,
+    depth: Infinity
   }).apply(undefined, arguments);
 }
 
@@ -55,7 +58,8 @@ function assignConcat() {
 function assignShallow() {
   return getAssign({
     deep: false,
-    arrayConcat: false
+    arrayConcat: false,
+    depth: Infinity
   }).apply(undefined, arguments);
 }
 
@@ -65,7 +69,8 @@ function assignShallow() {
 function assignShallowConcat() {
   return getAssign({
     deep: false,
-    arrayConcat: true
+    arrayConcat: true,
+    depth: Infinity
   }).apply(undefined, arguments);
 }
 
@@ -77,7 +82,8 @@ function getAssign() {
 
   options = Object.assign({
     deep: true,
-    arrayConcat: false
+    arrayConcat: false,
+    depth: Infinity
   }, options);
 
   return function (target) {

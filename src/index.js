@@ -9,6 +9,7 @@ export function assign() {
   return getAssign({
     deep: true,
     arrayConcat: false,
+    depth: Infinity,
   })(...arguments);
 }
 
@@ -19,6 +20,7 @@ export function assignDeep() {
   return getAssign({
     deep: true,
     arrayConcat: false,
+    depth: Infinity,
   })(...arguments);
 };
 
@@ -29,6 +31,7 @@ export function assignConcat() {
   return getAssign({
     deep: true,
     arrayConcat: true,
+    depth: Infinity,
   })(...arguments);
 }
 
@@ -39,6 +42,7 @@ export function assignShallow() {
   return getAssign({
     deep: false,
     arrayConcat: false,
+    depth: Infinity,
   })(...arguments);
 }
 
@@ -49,6 +53,7 @@ export function assignShallowConcat() {
   return getAssign({
     deep: false,
     arrayConcat: true,
+    depth: Infinity,
   })(...arguments);
 }
 
@@ -59,6 +64,7 @@ export function getAssign(options = {}) {
   options = Object.assign({
     deep: true,
     arrayConcat: false,
+    depth: Infinity,
   }, options);
 
   return function (target, ...sources) {
