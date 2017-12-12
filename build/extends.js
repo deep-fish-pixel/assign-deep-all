@@ -15,9 +15,9 @@ var _invariant = require('invariant');
 
 var _invariant2 = _interopRequireDefault(_invariant);
 
-var _cloneDeep = require('clone-deep');
+var _clone = require('clone');
 
-var _cloneDeep2 = _interopRequireDefault(_cloneDeep);
+var _clone2 = _interopRequireDefault(_clone);
 
 var _isUnscalable = require('./isUnscalable');
 
@@ -37,35 +37,66 @@ function handle(options, target, nextSource) {
   var deep = options.deep;
 
   if ((0, _types.isArray)(target) && (0, _types.isArray)(nextSource)) {
-    if (!options.concat) {
+    if (!options.arrayConcat) {
       nextSource.forEach(function (element, index) {
-        target[index] = deep ? (0, _cloneDeep2.default)(element) : element;
+        target[index] = deep ? (0, _clone2.default)(element) : element;
       });
     } else {
       nextSource.forEach(function (element) {
-        target.push(deep ? (0, _cloneDeep2.default)(element) : element);
+        target.push(deep ? (0, _clone2.default)(element) : element);
       });
     }
-  } else if ((0, _types.isObject)(target) || (0, _types.isArray)(nextSource)) {
+  } else if ((0, _types.isSet)(target) && (0, _types.isSet)(nextSource)) {
+    nextSource.forEach(function (element) {
+      target.add(deep ? (0, _clone2.default)(element) : element);
+    });
+  } else if ((0, _types.isMap)(target) && (0, _types.isMap)(nextSource)) {
+    nextSource.forEach(function (element, key) {
+      target.set(key, deep ? (0, _clone2.default)(element) : element);
+    });
+  } else if ((0, _types.isDate)(nextSource)) {
+    if ((0, _types.isDate)(target)) {
+      target.setTime(nextSource.getTime());
+    } else {
+      target = new Date().setTime(nextSource.getTime());
+    }
+  } else if ((0, _types.isRegExp)(nextSource)) {
+    target = (0, _clone2.default)(nextSource);
+  } else if ((0, _types.isObject)(target)) {
     var value;
     for (var nextKey in nextSource) {
       if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
         value = nextSource[nextKey];
         if (!deep || (0, _isUnscalable2.default)(value)) {
           target[nextKey] = value;
-        } else if ((0, _types.isNullUndefined)(target[nextKey])) {
-          if ((0, _types.isArray)(value)) {
-            target[nextKey] = [];
-          } else {
-            target[nextKey] = {};
-          }
-          handle(options, target[nextKey], value);
         } else {
-          handle(options, target[nextKey], value);
+          var next = true;
+          if ((0, _types.isDate)(value)) {
+            target[nextKey] = new Date();
+          } else if ((0, _types.isRegExp)(value)) {
+            target[nextKey] = (0, _clone2.default)(value);
+            next = false;
+          } else if ((0, _types.isNullUndefined)(target[nextKey])) {
+            if ((0, _types.isArray)(value)) {
+              target[nextKey] = [];
+            } else if ((0, _types.isSet)(value)) {
+              target[nextKey] = new Set();
+            } else if ((0, _types.isMap)(value)) {
+              target[nextKey] = new Map();
+            } else {
+              target[nextKey] = {};
+            }
+          }
+          next && handle({
+            arrayConcat: options.arrayConcat,
+            depth: (0, _types.isNullUndefined)(options.depth) ? undefined : options.depth - 1,
+            deep: options.deep && options.depth !== 1
+          }, target[nextKey], value, target, nextKey);
         }
       }
     }
   }
+  return target;
 }
 
 /*
@@ -76,5 +107,5 @@ function extend(options, target, nextSource) {
     (0, _invariant2.default)(target !== null || target !== undefined, 'target value can\'t be ' + String(target).toString());
     (0, _invariant2.default)(!(0, _types.isNumber)(target) || !(0, _types.isString)(target) || !(0, _types.isBoolean)(target), 'target value type can\'t be ' + (typeof target === 'undefined' ? 'undefined' : _typeof(target)));
   }
-  handle(options, target, nextSource);
+  return handle(options, target, nextSource);
 }

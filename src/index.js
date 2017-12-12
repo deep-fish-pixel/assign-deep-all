@@ -8,7 +8,7 @@ import extend from './extends';
 export function assign() {
   return getAssign({
     deep: true,
-    concat: false,
+    arrayConcat: false,
   })(...arguments);
 }
 
@@ -23,7 +23,7 @@ export const assignDeep = assign;
 export function assignConcat() {
   return getAssign({
     deep: true,
-    concat: true,
+    arrayConcat: true,
   })(...arguments);
 }
 
@@ -33,7 +33,7 @@ export function assignConcat() {
 export function assignShallow() {
   return getAssign({
     deep: false,
-    concat: false,
+    arrayConcat: false,
   })(...arguments);
 }
 
@@ -43,23 +43,22 @@ export function assignShallow() {
 export function assignShallowConcat() {
   return getAssign({
     deep: false,
-    concat: true,
+    arrayConcat: true,
   })(...arguments);
 }
 
-
+/*
+ * get different assign by options
+ * */
 export function getAssign(options = {}) {
   options = Object.assign({
     deep: true,
-    concat: false,
+    arrayConcat: false,
   }, options);
 
   return function (target, ...sources) {
-    sources.forEach(function (source) {
-      extend(options, target, source);
-    });
-    return target;
+    return sources.reduce(function (target, source){
+      return extend(options, target, source);
+    }, target);
   }
 }
-
-

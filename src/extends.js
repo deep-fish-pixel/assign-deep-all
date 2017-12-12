@@ -2,7 +2,7 @@
 * extend object or array in deep or shallow
 * */
 import invariant from 'invariant';
-import cloneDeep from 'clone-deep';
+import clone from 'clone';
 import isUnscalable from './isUnscalable';
 import {
   isArray,
@@ -10,6 +10,10 @@ import {
   isNumber,
   isObject,
   isString,
+  isDate,
+  isRegExp,
+  isSet,
+  isMap,
   isNullUndefined
 } from './types';
 
@@ -23,40 +27,80 @@ function handle (options, target, nextSource) {
   const deep = options.deep;
 
   if(isArray(target) && isArray(nextSource)){
-    if(!options.concat){
+    if(!options.arrayConcat){
       nextSource.forEach(function (element, index) {
-        target[index] = deep ? cloneDeep(element) : element;
+        target[index] = deep ? clone(element) : element;
       });
     }
     else{
       nextSource.forEach(function (element) {
-        target.push(deep ? cloneDeep(element) : element);
+        target.push(deep ? clone(element) : element);
       });
     }
   }
-  else if(isObject(target) || isArray(nextSource)){
+  else if(isSet(target) && isSet(nextSource)){
+    nextSource.forEach(function (element) {
+      target.add(deep ? clone(element) : element);
+    });
+  }
+  else if(isMap(target) && isMap(nextSource)){
+    nextSource.forEach(function (element, key) {
+      target.set(key, deep ? clone(element) : element);
+    });
+  }
+  else if(isDate(nextSource)){
+    if(isDate(target)){
+      target.setTime(nextSource.getTime());
+    }
+    else{
+      target = new Date().setTime(nextSource.getTime());
+    }
+  }
+  else if(isRegExp(nextSource)){
+    target = clone(nextSource);
+  }
+  else if(isObject(target)){
     var value;
     for (var nextKey in nextSource) {
       if (Object.prototype.hasOwnProperty.call(nextSource, nextKey)) {
         value = nextSource[nextKey];
-        if(!deep || isUnscalable(value)){
+        if(!deep
+          || isUnscalable(value)){
           target[nextKey] = value;
         }
-        else if(isNullUndefined(target[nextKey])){
-          if(isArray(value)){
-            target[nextKey] = [];
-          }
-          else{
-            target[nextKey] = {};
-          }
-          handle(options, target[nextKey], value);
-        }
         else{
-          handle(options, target[nextKey], value);
+          var next = true;
+          if(isDate(value)){
+            target[nextKey] = new Date();
+          }
+          else if(isRegExp(value)){
+            target[nextKey] = clone(value);
+            next = false;
+          }
+          else if(isNullUndefined(target[nextKey])){
+            if(isArray(value)){
+              target[nextKey] = [];
+            }
+            else if(isSet(value)){
+              target[nextKey] = new Set();
+            }
+            else if(isMap(value)){
+              target[nextKey] = new Map();
+            }
+            else{
+              target[nextKey] = {};
+            }
+          }
+          next && handle({
+            arrayConcat: options.arrayConcat,
+            depth: isNullUndefined(options.depth) ? undefined : options.depth - 1,
+            deep: options.deep && options.depth !== 1
+          }, target[nextKey], value, target, nextKey);
         }
       }
     }
   }
+  return target;
 }
 
 /*
@@ -70,5 +114,5 @@ export default function extend(options, target, nextSource) {
       || !isString(target)
       || !isBoolean(target), `target value type can't be ${typeof target}`);
   }
-  handle(options, target, nextSource);
+  return handle(options, target, nextSource);
 }

@@ -4,13 +4,14 @@
 import {
   isBoolean,
   isNumber,
-  isString
+  isString,
+  isDate,
+  isRegExp,
 } from './types';
 
 export default function isUnscalable(target) {
   return target == null
     || target == undefined
-    || isNumber(target)
     || isBoolean(target)
     || isString(target)
     || isNumber(target);

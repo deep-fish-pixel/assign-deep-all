@@ -22,7 +22,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 function assign() {
   return getAssign({
     deep: true,
-    concat: false
+    arrayConcat: false
   }).apply(undefined, arguments);
 }
 
@@ -40,7 +40,7 @@ var assignDeep = exports.assignDeep = assign;
 function assignConcat() {
   return getAssign({
     deep: true,
-    concat: true
+    arrayConcat: true
   }).apply(undefined, arguments);
 }
 
@@ -50,7 +50,7 @@ function assignConcat() {
 function assignShallow() {
   return getAssign({
     deep: false,
-    concat: false
+    arrayConcat: false
   }).apply(undefined, arguments);
 }
 
@@ -60,16 +60,19 @@ function assignShallow() {
 function assignShallowConcat() {
   return getAssign({
     deep: false,
-    concat: true
+    arrayConcat: true
   }).apply(undefined, arguments);
 }
 
+/*
+ * get different assign by options
+ * */
 function getAssign() {
   var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
   options = Object.assign({
     deep: true,
-    concat: false
+    arrayConcat: false
   }, options);
 
   return function (target) {
@@ -77,9 +80,8 @@ function getAssign() {
       sources[_key - 1] = arguments[_key];
     }
 
-    sources.forEach(function (source) {
-      (0, _extends2.default)(options, target, source);
-    });
-    return target;
+    return sources.reduce(function (target, source) {
+      return (0, _extends2.default)(options, target, source);
+    }, target);
   };
 }
