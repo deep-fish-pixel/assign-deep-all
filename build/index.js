@@ -3,8 +3,8 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.assignDeep = undefined;
 exports.assign = assign;
+exports.assignDeep = assignDeep;
 exports.assignConcat = assignConcat;
 exports.assignShallow = assignShallow;
 exports.assignShallowConcat = assignShallowConcat;
@@ -32,7 +32,12 @@ function assign() {
 /**
  * assign entry
  */
-var assignDeep = exports.assignDeep = assign;
+function assignDeep() {
+  return getAssign({
+    deep: true,
+    arrayConcat: false
+  }).apply(undefined, arguments);
+};
 
 /*
  * shallow assign and concat array

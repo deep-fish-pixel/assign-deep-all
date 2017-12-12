@@ -15,7 +15,12 @@ export function assign() {
 /*
  * deep assign and replace array
  * */
-export const assignDeep = assign;
+export function assignDeep() {
+  return getAssign({
+    deep: true,
+    arrayConcat: false,
+  })(...arguments);
+};
 
 /*
  * shallow assign and concat array
