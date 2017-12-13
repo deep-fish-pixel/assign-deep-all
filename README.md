@@ -7,8 +7,9 @@ And can assign array by merge or cancat.
 ## Install
 
 ```
-npm install --save assign-deep-all 
+$ npm install --save assign-deep-all 
 ```
+
 
 ## Examples
 

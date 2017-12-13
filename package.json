@@ -1,6 +1,6 @@
 {
   "name": "assign-deep-all",
-  "version": "1.1.4",
+  "version": "1.1.6",
   "description": "assign or extends object、array、set、map、date、regExp by deep or shallow. This can be used in merging multi webpack.configs smoothly",
   "main": "build/index.js",
   "scripts": {
