@@ -4,17 +4,17 @@
 This can assign object、array、date、regExp、set、map deep or shallow.
 And can assign array by merge or cancat.
 
-### Install
+## Install
 
 ```
 npm install --save assign-deep-all 
 ```
 
-### Examples
+## Examples
 
 ##### Assign object deep
 
-```
+```js
 import {assign} from 'assign-deep-all';
 
 var target = {
@@ -36,14 +36,15 @@ var source = {
 };
 assign(target, source);
 source.a.b.c = 22;
-console.log(JSON.stringify(target));//{"a":{"b":{"c":2,"d":3}},"list":[3,4,5]}
+console.log(JSON.stringify(target));
+//{"a":{"b":{"c":2,"d":3}},"list":[3,4,5]}
 
 ```
 Because assign deep, target.a.b.c is alse 1 number.
 
 ##### Assign object deep and concated array
 
-```
+```js
 import {assignConcat} from 'assign-deep-all';
 
 var target = {
@@ -73,7 +74,7 @@ Because assign deep, target.a.b.c is alse 1 number. But array assign concated, s
 
 ##### Assign object shallow
 
-```
+```js
 import {assignShallow} from 'assign-deep-all';
 
 var target = {
@@ -101,7 +102,7 @@ console.log(JSON.stringify(target));
 
 ##### Assign object shallow and concated array
 
-```
+```js
 import {assignShallowConcat} from 'assign-deep-all';
 
 var target = {
@@ -130,7 +131,7 @@ The result is equal last one, because assign is shallow but source.list is neste
 
 ##### Assign array shallow and concated
 
-```
+```js
 import {assignShallowConcat} from 'assign-deep-all';
 
 var target = [1, 2];
@@ -142,7 +143,7 @@ console.log(JSON.stringify(target));
 
 ##### Assign array shallow but not concated
 
-```
+```js
 import {assignShallow} from 'assign-deep-all';
 
 var target = [1, 2];
@@ -155,7 +156,7 @@ This result differs from the last one;
 
 ##### Assign set
 
-```
+```js
 import {assign} from 'assign-deep-all';
 
 var target = new Set(),
@@ -171,7 +172,7 @@ This target.length is 4;
 
 ##### Assign map
 
-```
+```js
 import {assign} from 'assign-deep-all';
 
 var target = new Map(),
@@ -190,7 +191,7 @@ This target.length is 4;
 If the aboves can't meet the needs, you can use getAssign to achieve your custom need.
 And if you use depth to limit nest steps,  only use getAssign to achieve that;
 
-```
+```js
 import {getAssign} from 'assign-deep-all';
 
 var target = [1, 2];
@@ -203,13 +204,13 @@ getAssign({
 console.log(JSON.stringify(target));//[1,2,3,4,5]
 ```
 
-### API
+## API
 
 ##### getAssign(options)
 
 Get different assign method by options.
 
-```
+```js
 options = {
     deep: true, //deep or shallow assign. default true
     arrayConcat: false, //assign array merge or concat. default false
